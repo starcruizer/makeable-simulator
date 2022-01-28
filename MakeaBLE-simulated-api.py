@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 
-import numpy as np
 import pandas as pd
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 def read_sample_data(filepath):
     data = pd.read_csv(filepath + 'dataset_new.csv')
@@ -20,6 +20,15 @@ sample_id = 0 # index for data retrieval
 
 app = FastAPI()
 
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/sim/{sample_id}")
 async def getRecord(sample_id : int):
